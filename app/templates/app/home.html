@@ -62,13 +62,18 @@
 <div class="row p-4" style="width:100%">
   {%for product in products%}
   <div class="col-lg-3 mb-4">
-    <img class="thumbnail" src="{% static 'app/images/placeholder.png' %}">
+    {% if product.image %}
+      <img class="thumbnail" src="{{ product.image.url }}" alt="{{ product.name }}">
+    {% else %}
+      <img class="thumbnail" src="{% static 'app/images/placeholder.png' %}" alt="{{ product.name }}">
+    {% endif %} 
+    {% comment %} <img class="thumbnail" src="{{ product.ImageUrl }}" alt="{{ product.name }}"> {% endcomment %}
     <div class="box-element product">
       <h6><strong>{{product.name}}</strong></h6>
       <hr>
       <button class="btn btn-outline-secondary add-btn">Add to cart</button>
-      <a class="btn btm-outline-success" href = "#">Xem</a>
-      <h4 style="display : inline-block;float:right"><strong>{{product.price | floatformat:2}} VND</strong></h4>
+      <a class="btn btm-outline-success" href = "#">View</a>
+      <h4 style="display : inline-block;float:right"><strong>{{product.price | floatformat:2}}$</strong></h4>
     </div>
   </div>
   {% endfor %}
