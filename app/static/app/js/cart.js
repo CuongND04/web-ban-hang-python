@@ -30,5 +30,7 @@ function updateUserOrder(productId,action){
   .then((res)=>res.json())
   .then(data =>{
     console.log(data)
+    // nó sẽ reload lại trang web khi xảy ra sự kiện
+    location.reload()
   })
 }
