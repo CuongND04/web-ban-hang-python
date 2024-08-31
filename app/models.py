@@ -1,6 +1,27 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from django import forms
+from django.utils.translation import gettext_lazy as _
 # Create your models here.
+
+# Form register django
+class CreateUserForm(UserCreationForm):
+  # fix lỗi không thêm placeholder vào input password
+  def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['password1'].widget = forms.PasswordInput(attrs={'placeholder': _("Password")})
+        self.fields['password2'].widget = forms.PasswordInput(attrs={'placeholder': _("Confirm Password")})
+  class Meta(UserCreationForm):
+    model  = User
+    fields = ['username','email','first_name','last_name','password1','password2']
+    # thêm placeholder
+    widgets = {
+        'username': forms.TextInput(attrs={'placeholder': 'Enter your username', 'autocomplete': 'off'}),
+        'email': forms.EmailInput(attrs={'placeholder': 'Enter your email', 'autocomplete': 'off'}),
+        'first_name': forms.TextInput(attrs={'placeholder': 'Enter your first name', 'autocomplete': 'off'}),
+        'last_name': forms.TextInput(attrs={'placeholder': 'Enter your last name', 'autocomplete': 'off'}),
+    }
 class Customer(models.Model):
   user = models.OneToOneField(User,on_delete=models.SET_NULL,null=True,blank = False)
   name = models.CharField(max_length=200,null=True )
