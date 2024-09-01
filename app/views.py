@@ -6,14 +6,36 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 # Create your views here.
+def search(request):
+  if request.user.is_authenticated:
+    customer = request.user
+    order,created = Order.objects.get_or_create(customer=customer,complete = False)
+    items  = order.orderitem_set.all()
+    cartItems = order.get_cart_items
+  else:
+    # khi người dùng chưa đăng nhập
+    items = []
+    order = {'get_cart_items':0,'get_cart_total': 0}
+    cartItems = order['get_cart_items']
+  products = Product.objects.all()
+  if request.method == "POST":
+    searched = request.POST["searched"]
+    keys = Product.objects.filter(name__contains = searched)
+  context = {"searched":searched,"keys":keys,'products':products,'cartItems':cartItems }
+  return render(request,'app/search.html',context)
+
 def register(request):
   form = CreateUserForm()
   if request.method == "POST":
     form = CreateUserForm(request.POST)
     if form.is_valid():
       form.save()
+      return redirect('login')
   context={'form':form}
   return render(request,'app/register.html',context)
+
+
+
 def loginPage(request):
   if request.user.is_authenticated:
     return redirect('home')
@@ -27,9 +49,13 @@ def loginPage(request):
     else: messages.info(request,'user or password not correct!')
   context={}
   return render(request,'app/login.html',context)
+
+
 def logoutPage(request):
   logout(request)
   return redirect('login')
+
+
 def home(request):
   if request.user.is_authenticated:
     customer = request.user
@@ -44,6 +70,8 @@ def home(request):
   products = Product.objects.all()
   context={'products':products,'cartItems':cartItems }
   return render(request,'app/home.html',context)
+
+
 def cart(request):
   if request.user.is_authenticated:
     customer = request.user

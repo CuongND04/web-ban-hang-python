@@ -114,12 +114,14 @@
               <a class="nav-link disabled">Liên hệ</a>
             </li>
           </ul>
-          <form class="d-flex" role="search">
+          <form class="d-flex" role="search" method="POST" action= "{% url 'search' %}" >
+            {% csrf_token %}
             <input
               class="form-control me-2"
               type="search"
               placeholder="Search"
               aria-label="Search"
+              name ="searched"
             />
             <button class="btn btn-outline-success" type="submit">
               Search
@@ -163,6 +165,7 @@
     {% block cart_content %}{% endblock cart_content %}
     {% block content_checkout %}{% endblock content_checkout %}
     {% block register %}{% endblock register %}
+    {% block search %}{% endblock search %}
     <footer class="container--fluid bg-success text-center fixed-bottom p-2 mt-5">Copyright 2024</footer>
 
     <script src="" async defer></script>
