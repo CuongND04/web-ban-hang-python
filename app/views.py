@@ -12,16 +12,20 @@ def search(request):
     order,created = Order.objects.get_or_create(customer=customer,complete = False)
     items  = order.orderitem_set.all()
     cartItems = order.get_cart_items
+    user_not_login = "none"
+    user_login = "block"
   else:
     # khi người dùng chưa đăng nhập
     items = []
     order = {'get_cart_items':0,'get_cart_total': 0}
     cartItems = order['get_cart_items']
+    user_not_login = "block"
+    user_login = "none"
   products = Product.objects.all()
   if request.method == "POST":
     searched = request.POST["searched"]
     keys = Product.objects.filter(name__contains = searched)
-  context = {"searched":searched,"keys":keys,'products':products,'cartItems':cartItems }
+  context = {"searched":searched,"keys":keys,'products':products,'cartItems':cartItems,'user_not_login':user_not_login,'user_login':user_login }
   return render(request,'app/search.html',context)
 
 def register(request):
@@ -39,6 +43,8 @@ def register(request):
 def loginPage(request):
   if request.user.is_authenticated:
     return redirect('home')
+  user_not_login = "block"
+  user_login = "none"
   if request.method == "POST":
     username = request.POST.get('username')
     password = request.POST.get('password')
@@ -47,7 +53,7 @@ def loginPage(request):
       login(request,user)
       return redirect('home')
     else: messages.info(request,'user or password not correct!')
-  context={}
+  context={'user_not_login':user_not_login,'user_login':user_login }
   return render(request,'app/login.html',context)
 
 
@@ -62,13 +68,17 @@ def home(request):
     order,created = Order.objects.get_or_create(customer=customer,complete = False)
     items  = order.orderitem_set.all()
     cartItems = order.get_cart_items
+    user_not_login = "none"
+    user_login = "block"
   else:
     # khi người dùng chưa đăng nhập
     items = []
     order = {'get_cart_items':0,'get_cart_total': 0}
     cartItems = order['get_cart_items']
+    user_not_login = "block"
+    user_login = "none"
   products = Product.objects.all()
-  context={'products':products,'cartItems':cartItems }
+  context={'products':products,'cartItems':cartItems,'user_not_login':user_not_login,'user_login':user_login }
   return render(request,'app/home.html',context)
 
 
@@ -78,14 +88,17 @@ def cart(request):
     order,created = Order.objects.get_or_create(customer=customer,complete = False)
     items  = order.orderitem_set.all()
     cartItems = order.get_cart_items
-
+    user_not_login = "none"
+    user_login = "block"
   else:
     # khi người dùng chưa đăng nhập
     items = []
     order = {'get_cart_items':0,'get_cart_total': 0}
     cartItems = order['get_cart_items']
+    user_not_login = "block"
+    user_login = "none"
 
-  context={'items':items,'order':order,'cartItems':cartItems }
+  context={'items':items,'order':order,'cartItems':cartItems,'user_not_login':user_not_login,'user_login':user_login }
   return render(request,'app/cart.html',context)
 
 def checkout(request):
@@ -94,13 +107,17 @@ def checkout(request):
     order,created = Order.objects.get_or_create(customer=customer,complete = False)
     items  = order.orderitem_set.all()
     cartItems = order.get_cart_items
+    user_not_login = "none"
+    user_login = "block"
   else:
     # khi người dùng chưa đăng nhập
     items = []
     order = {'get_cart_items':0,'get_cart_total': 0}
     cartItems = order['get_cart_items']
+    user_not_login = "block"
+    user_login = "none"
 
-  context={'items':items,'order':order,'cartItems':cartItems }
+  context={'items':items,'order':order,'cartItems':cartItems,'user_not_login':user_not_login,'user_login':user_login }
   return render(request,'app/checkout.html',context)
 
 def updateItem(request):

@@ -129,33 +129,28 @@
           </form>
         </div>
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-          <li class="nav-item">
+          <li class="nav-item" style="display:{{user_login}}">
             <span class="nav-link" >Hello {{request.user}}!!</span>
           </li>
 
           <li class="nav-item">
-            <a href="{% url 'logout' %}" class="nav-link" >Logout</a>
+            <a href="{% url 'logout' %}" style="display:{{user_login}}" class="nav-link" >Logout</a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'login' %}">Đăng nhập</a>
+            <a class="nav-link" style="display:{{user_not_login}}" href="{% url 'login' %}">Đăng nhập</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'register' %}">Đăng ký</a>
+            <a class="nav-link" style="display:{{user_not_login}}" href="{% url 'register' %}">Đăng ký</a>
           </li>
         </ul>
-        {% comment %} <div class='form-inline my-2 my-lg-0'>
-          <a href="{% url 'cart' %}"><img id="cart-icon" src = "{% static 'images/cart.png' %}"></a>
-          <p >0</p>
-        </div> {% endcomment %}
-        <div class="form-inline my-2 my-lg-0">
+        <div class="form-inline my-2 my-lg-0" >
                     
-          <a href="{% url 'cart'%}"><img id='cart-icon' src="{% static 'images/cart.png'%}"></a>
+          <a  href="{% url 'cart'%}"><img id='cart-icon' src="{% static 'images/cart.png'%}"></a>
           
         </div>   
         <div class="form-inline my-2 my-lg-0">
-          <p id = 'cart-total'>{{cartItems}}</p>
+          <p  style="display:{{user_login}}" id = 'cart-total'>{{cartItems}}</p>
          
         </div>
       </div>
